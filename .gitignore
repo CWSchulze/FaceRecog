@@ -1,0 +1,7 @@
+﻿.pytest_cache
+.vscode
+__pycache__
+datasets
+photos
+output
+datasets_100x100
