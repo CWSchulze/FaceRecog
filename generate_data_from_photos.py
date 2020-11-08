@@ -45,19 +45,22 @@ def handle_photo(full_filename, name, handle_face=handle_face):
         cv2.rectangle(im, (x, y), (x + w, y + h), (255, 0, 0), 2)
         face = gray[y:y + h, x:x + w]
         #width = int(height/h*w)
-        face_resize = cv2.resize(face, (width, height))
-        handle_face(im, face_index, face_resize, name)
+        face_resized = cv2.resize(face, (width, height))
+        equalized_image = cv2.equalizeHist(face_resized)
+        normalised_image = np.zeros((width, height))
+        imageNp = cv2.normalize(face_resized, normalised_image, 0, 255, cv2.NORM_MINMAX)
+        handle_face(im, face_index, equalized_image, name)
 
 
-# for dirname in os.listdir(photos_subfolder):
-#     for filename in os.listdir(os.path.join(photos_subfolder, dirname)):
-#         if os.path.isfile(filename) and os.path.splitext(filename).upper()=='.JPG':
-#             full_filename = os.path.join(photos_subfolder, dirname, filename)
-#             handle_photo(full_filename, dirname)
+for dirname in os.listdir(photos_subfolder):
+    for filename in os.listdir(os.path.join(photos_subfolder, dirname)):
+        full_filename = os.path.join(photos_subfolder, dirname, filename)
+        if os.path.isfile(full_filename) and os.path.splitext(full_filename)[1].upper()=='.JPG':
+            handle_photo(full_filename, dirname)
 
-dirname = r"C:\Users\Christian\Pictures\iCloud Photos\Downloads\2020"
-#dirname = r"C:\Users\Christian\Pictures\iphone\103APPLE"
-for filename in os.listdir(dirname):
-    full_filename = os.path.join(dirname, filename)
-    if os.path.isfile(full_filename) and os.path.splitext(full_filename)[1].upper()=='.JPG':
-        handle_photo(full_filename, None)
+# dirname = r"C:\Users\Christian\Pictures\iCloud Photos\Downloads\2020"
+# #dirname = r"C:\Users\Christian\Pictures\iphone\103APPLE"
+# for filename in os.listdir(dirname):
+#     full_filename = os.path.join(dirname, filename)
+#     if os.path.isfile(full_filename) and os.path.splitext(full_filename)[1].upper()=='.JPG':
+#         handle_photo(full_filename, None)
